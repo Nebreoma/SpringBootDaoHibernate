@@ -13,8 +13,12 @@ public class Controller {
 
     private Service service;
 
+    public Controller(Service service) {
+        this.service = service;
+    }
+
     @GetMapping("/persons/by-city")
-    public List<Person> getPersons(@RequestParam("city") String city) {
-        return service.getPerson(city);
+    public List<Person> getPersonsByCity(@RequestParam("city") String city) {
+        return service.getPersons(city);
     }
 }

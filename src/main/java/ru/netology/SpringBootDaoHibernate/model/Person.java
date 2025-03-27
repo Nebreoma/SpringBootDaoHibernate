@@ -2,14 +2,18 @@ package ru.netology.SpringBootDaoHibernate.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
+@IdClass(PersonId.class)
 @Table(name = "PERSONS", schema = "schema.sql")
 public class Person {
     @Id
-    @GeneratedValue
-    private Integer id;
     private String name;
+    @Id
     private String surname;
+    @Id
+    private int age;
     @Column(name = "phone_number")
     private String phoneNumber;
     @Column(name = "city_of_living")
@@ -18,9 +22,10 @@ public class Person {
     public Person() {
     }
 
-    public Person(String name, String surname, String phoneNumber, String cityOfLiving) {
+    public Person(String name, String surname, int age, String phoneNumber, String cityOfLiving) {
         this.name = name;
         this.surname = surname;
+        this.age = age;
         this.phoneNumber = phoneNumber;
         this.cityOfLiving = cityOfLiving;
     }
@@ -41,6 +46,14 @@ public class Person {
         this.surname = surname;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -55,5 +68,29 @@ public class Person {
 
     public void setCityOfLiving(String cityOfLiving) {
         this.cityOfLiving = cityOfLiving;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonId personId = (PersonId) o;
+        return age == personId.age && Objects.equals(name, personId.name) && Objects.equals(surname, personId.surname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, surname, age);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", cityOfLiving='" + cityOfLiving + '\'' +
+                '}';
     }
 }
