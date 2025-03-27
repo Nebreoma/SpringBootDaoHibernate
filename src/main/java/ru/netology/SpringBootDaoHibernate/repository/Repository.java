@@ -2,18 +2,17 @@ package ru.netology.SpringBootDaoHibernate.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.netology.SpringBootDaoHibernate.model.Person;
+import ru.netology.SpringBootDaoHibernate.model.PersonId;
 
 import java.util.List;
+import java.util.Optional;
 
-public class Repository {
+public interface Repository extends JpaRepository<Person, PersonId> {
+    List<Person> findByCityOfLiving(String city);
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    List<Person> findByAgeLessThanOrderByAge(int age);
 
-    public List<Person> getPersonsByCity(String city) {
-        return entityManager.createQuery("select p from Person p where p.cityOfLiving = :city order by p.cityOfLiving", Person.class)
-                .setParameter("city", city)
-                .getResultList();
-    }
+    Optional<Person> findByNameAndSurname(String name, String surname);
 }
